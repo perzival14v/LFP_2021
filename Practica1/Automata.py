@@ -2,12 +2,26 @@ from tkinter import filedialog
 from tkinter import *
 import os
 
+
 #Nombre = conjunto alphanumerico, debe iniciar con una letra
 #Numero = conjunto de numeros del 0-9
 
+listaMochileros =[]
+
+class mochilero():
+    def __init__(self):
+        self.numbersNoOrdered = []
+        self.numbersOrdered = None
+        self.title = ""
+        self.positions = None
+        self.number_wanted=None
+
+
+
+
 
 #Simbolos terminales
-T=[" ",",","="]
+T=[" ",",","=","\n"]
 #Alfabeto
 A=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z"]
 N=["0","1","2","3","4","5","6","7","8","9"]
@@ -40,7 +54,11 @@ def analizar():
 
 
     for line in file:
+
+        mochila = mochilero()
+        indice =-1
         for letter in line:
+            indice+=1
 #Determinar el tipo inicial
             if group == "" and type=="":
                 #numero
@@ -58,6 +76,7 @@ def analizar():
                 elif letter in T:
 
                     numbers.append(group)
+                    mochila.numbersNoOrdered = numbers.copy()
 
                     group=""
                     type=""
@@ -71,26 +90,74 @@ def analizar():
 
                     #COMANDO
                     if group.lower() in C:
-                        type == "comando"
+                        type = "comando"
 
                         if group.lower() == "ordenar":
                             numbersOrdered=numbers.copy()
                             numbersOrdered.sort()
 
+                            mochila.numbersOrdered=numbersOrdered
+
+                            group = ""
+                            type = ""
 
 
-                    else:
+                    elif letter == "=":
                         title = group
+                        mochila.title = title
 
                         group = ""
                         type = ""
 
             elif type == "comando":
-                if group.lower() == "buscar ":
+                if group.lower() == "buscar":
                     if letter in N:
-                        numberWanted = letter
+                        numberWanted = numberWanted+letter
+                        aux = []
+                        position=0
 
-            if letter == line[len(line)-1]:
-                print("Organizar info")
+
+                        if indice+1 == len(line):
+
+                            mochila.number_wanted=numberWanted
+
+                            for i in numbers:
+                                if i == numberWanted:
+                                    aux.append(position)
+                                    position += 1
+                                else:
+                                    position += 1
+                            if len(aux) != 0:
+                                mochila.positions = aux
+                            else:
+                                mochila.positions = None
+
+                            numberWanted = ""
+
+                    elif letter in T:
+
+                        mochila.number_wanted = numberWanted
+
+                        for i in numbers:
+                            if i==numberWanted:
+                                aux.append(position)
+                                position += 1
+                            else:
+                                position+=1
+                        if len(aux)!=0:
+                            mochila.positions=aux
+                        else:
+                            mochila.positions=None
+                        numberWanted = ""
 
 
+
+            if letter == "\n" or indice+1==len(line):
+                listaMochileros.append(mochila)
+                group = ""
+                type = ""
+                numbers=[]
+
+
+
+    file.close()
