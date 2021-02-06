@@ -116,7 +116,7 @@ def analizar():
                     if letter in N:
                         numberWanted = numberWanted+letter
                         aux = []
-                        position=0
+                        position=1
 
 
                         if indice+1 == len(line):
@@ -151,10 +151,27 @@ def analizar():
                         else:
                             mochila.positions=None
                         numberWanted = ""
+                        group = ""
+                        type = ""
 
 
 
             if letter == "\n" or indice+1==len(line):
+
+                if group.lower() in C:
+                    type = "comando"
+
+                    if group.lower() == "ordenar":
+                        # numbersOrdered=numbers.copy()
+                        # numbersOrdered.sort()
+                        numbersOrdered = Burbuja(numbers.copy())
+
+                        mochila.numbersOrdered = numbersOrdered
+
+                        group = ""
+                        type = ""
+
+
                 listaMochileros.append(mochila)
                 group = ""
                 type = ""
