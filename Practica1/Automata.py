@@ -1,5 +1,6 @@
 from tkinter import filedialog
 from tkinter import *
+from Ordenamiento import Burbuja
 import os
 
 
@@ -21,7 +22,7 @@ class mochilero():
 
 
 #Simbolos terminales
-T=[" ",",","=","\n"]
+T=[" ",",","=","\n","\t"]
 #Alfabeto
 A=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z"]
 N=["0","1","2","3","4","5","6","7","8","9"]
@@ -93,8 +94,9 @@ def analizar():
                         type = "comando"
 
                         if group.lower() == "ordenar":
-                            numbersOrdered=numbers.copy()
-                            numbersOrdered.sort()
+                            #numbersOrdered=numbers.copy()
+                            #numbersOrdered.sort()
+                            numbersOrdered = Burbuja(numbers.copy())
 
                             mochila.numbersOrdered=numbersOrdered
 
